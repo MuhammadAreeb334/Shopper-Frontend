@@ -158,7 +158,12 @@ const EditProduct = () => {
     ) {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await FireAPI(`api/products/${id}`, "DELETE", null, token);
+        const response = await FireAPI(
+          `api/products/${id}`,
+          "DELETE",
+          null,
+          token,
+        );
         toast.success("Product deleted successfully!");
         navigate("/admin/list-product");
       } catch (error) {
@@ -349,7 +354,7 @@ const EditProduct = () => {
                   <div key={`existing-${index}`} className="relative group">
                     <div className="w-32 h-32 border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
                       <img
-                        src={`${baseUrl}${imageUrl}`}
+                        src={imageUrl}
                         alt={`Existing product ${index + 1}`}
                         className="w-full h-full object-cover"
                       />

@@ -4,7 +4,6 @@ import { FireAPI, baseUrl } from "../hooks/useRequest";
 import BreadCrums from "../Components/BreadCrums/BreadCrums";
 import ProductDisplay from "../Components/ProductDisplay/ProductDisplay";
 import toast from "react-hot-toast";
-import DescriptionBox from "../Components/DescriptionBox/DescriptionBox";
 import RelatedProducts from "../Components/RelatedProducts/RelatedProducts";
 
 const Product = () => {
@@ -17,7 +16,7 @@ const Product = () => {
       setLoading(true);
       try {
         const data = await FireAPI(`api/products/${productId}`, "GET");
-        // console.log("Single product data:", data);
+        console.log("Single product data:", data);
 
         if (data && data.success) {
           const productData = data.product;
@@ -25,8 +24,8 @@ const Product = () => {
           const formattedProduct = {
             id: productData._id,
             name: productData.name,
-            image: `${baseUrl}${productData.image?.[0] || ""}`,
-            images: productData.image?.map((img) => `${baseUrl}${img}`) || [],
+            image: productData.image?.[0] || "",
+            images: productData.image || [],
             new_price: productData.newPrice,
             old_price: productData.oldPrice,
             category: productData.category,
@@ -77,7 +76,6 @@ const Product = () => {
     <div>
       <BreadCrums product={product} />
       <ProductDisplay product={product} />
-      {/* <DescriptionBox /> */}
       <RelatedProducts
         currentProductId={product.id}
         currentCategory={product.category}

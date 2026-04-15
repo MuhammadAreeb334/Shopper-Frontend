@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Popular.css";
-import { FireAPI, baseUrl } from "../../hooks/useRequest";
+import { FireAPI } from "../../hooks/useRequest";
 import Items from "../Items/Items";
 
 const Popular = () => {
@@ -13,17 +13,24 @@ const Popular = () => {
         const data = await FireAPI("api/products", "GET");
         const products = data?.allProducts;
 
-        const filtered = products
-          .filter((p) => p.category === "womens")
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 4)
-          .map((item) => ({
-            ...item,
-            id: item._id,
-            image: `${baseUrl}${item.image?.[0] || ""}`,
-          }));
+        if (products && products.length > 0) {
+          const filtered = products
+            .filter((p) => p.category === "womens")
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 4)
+            .map((item) => ({
+              id: item._id,
+              name: item.name,
+              image: item.image?.[0] || "",
+              images: item.image || [],
+              newPrice: item.newPrice,
+              oldPrice: item.oldPrice,
+              category: item.category,
+              available: item.available,
+            }));
 
-        setPopularProducts(filtered);
+          setPopularProducts(filtered);
+        }
       } catch (error) {
         console.error("Fetch failed:", error);
       } finally {
@@ -47,9 +54,12 @@ const Popular = () => {
             popularProducts.map((item) => (
               <Items
                 key={item.id}
-                {...item}
+                id={item.id}
+                name={item.name}
+                image={item.image}
                 new_price={item.newPrice}
                 old_price={item.oldPrice}
+                category={item.category}
               />
             ))
           ) : (

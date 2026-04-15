@@ -29,6 +29,10 @@ const Items = (props) => {
     }
   };
 
+  const imageUrl = Array.isArray(props.image) ? props.image[0] : props.image;
+
+  // console.log("Image URL:", imageUrl); 
+
   return (
     <div className="items">
       {props.old_price && props.new_price && (
@@ -43,7 +47,14 @@ const Items = (props) => {
 
       <Link to={`/product/${props.id}`} className="items-link">
         <div className="image-container">
-          <img src={props.image} alt={props.name} />
+          <img
+            src={imageUrl}
+            alt={props.name}
+            onError={(e) => {
+              console.error("Image failed to load:", imageUrl);
+              e.target.src = "/placeholder-image.jpg"; // Add a placeholder image
+            }}
+          />
           <div className="quick-view-overlay">
             <button className="quick-view-btn">Quick View</button>
           </div>

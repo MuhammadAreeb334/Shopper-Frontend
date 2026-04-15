@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./NewCollection.css";
-import { FireAPI, baseUrl } from "../../hooks/useRequest";
+import { FireAPI } from "../../hooks/useRequest";
 import Items from "../Items/Items.jsx";
 
 const NewCollections = () => {
@@ -11,16 +11,26 @@ const NewCollections = () => {
     const fetchCollections = async () => {
       try {
         const data = await FireAPI("api/products", "GET");
-        const products = (data?.allProducts || [])
-          .slice(-8)
-          .reverse()
-          .map((item) => ({
-            ...item,
-            id: item._id,
-            image: `${baseUrl}${item.image?.[0] || ""}`,
-          }));
+        const products = data?.allProducts || [];
+        
+        if (products.length > 0) {
+          const latestProducts = [...products]
+            .sort((a, b) => new Date(b.date) - new Date(a.date)) 
+            .slice(0, 8)
+            .map((item) => ({
+              id: item._id,
+              name: item.name,
+              image: item.image?.[0] || "",
+              images: item.image || [],
+              newPrice: item.newPrice,
+              oldPrice: item.oldPrice,
+              category: item.category,
+              available: item.available,
+              date: item.date,
+            }));
 
-        setNewCollection(products);
+          setNewCollection(latestProducts);
+        }
       } catch (error) {
         console.error("Failed to fetch new collection:", error);
       } finally {
@@ -42,14 +52,23 @@ const NewCollections = () => {
         </div>
       ) : (
         <div className="collections">
-          {newCollection.map((item) => (
-            <Items
-              key={item.id}
-              {...item}
-              new_price={item.newPrice}
-              old_price={item.oldPrice}
-            />
-          ))}
+          {newCollection.length > 0 ? (
+            newCollection.map((item) => (
+              <Items
+                key={item.id}
+                id={item.id}
+                name={item.name}
+                image={item.image}
+                new_price={item.newPrice}
+                old_price={item.oldPrice}
+                category={item.category}
+              />
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              No products available
+            </div>
+          )}
         </div>
       )}
     </div>

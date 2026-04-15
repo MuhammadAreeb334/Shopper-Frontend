@@ -12,6 +12,7 @@ const ShopContextProvider = (props) => {
   const [user, setUser] = useState(
     JSON.parse(sessionStorage.getItem("user")) || null,
   );
+
   const updateToken = (newToken, userData = null) => {
     if (newToken) {
       sessionStorage.setItem("token", newToken);
@@ -37,12 +38,12 @@ const ShopContextProvider = (props) => {
         const formattedProducts = productsData.map((product) => ({
           id: product._id,
           name: product.name,
-          image: `${baseUrl}${product.image?.[0] || ""}`,
+          image: product.image?.[0] || "",
+          images: product.image || [],
           new_price: product.newPrice,
           old_price: product.oldPrice,
           category: product.category,
           available: product.available,
-          images: product.image || [],
         }));
         setProducts(formattedProducts);
         const initialCart = {};
@@ -69,7 +70,6 @@ const ShopContextProvider = (props) => {
         cartData[item.product._id] = item.quantity;
       });
       setCartItems(cartData);
-      // console.log(cartData);
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
@@ -109,6 +109,7 @@ const ShopContextProvider = (props) => {
       console.error("Remove error:", error);
     }
   };
+
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const itemId in cartItems) {

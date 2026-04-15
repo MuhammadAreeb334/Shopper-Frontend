@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./RelatedProduct.css";
-import { FireAPI, baseUrl } from "../../hooks/useRequest";
+import { FireAPI } from "../../hooks/useRequest";
 import Items from "../Items/Items.jsx";
 
 const RelatedProducts = ({ currentProductId, currentCategory }) => {
@@ -9,24 +9,35 @@ const RelatedProducts = ({ currentProductId, currentCategory }) => {
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
-      if (!currentCategory) return;
+      if (!currentCategory) {
+        setLoading(false);
+        return;
+      }
+      
       try {
         const data = await FireAPI("api/products", "GET");
         const products = data?.allProducts || [];
 
-        const filtered = products
-          .filter(
-            (p) => p.category === currentCategory && p._id !== currentProductId,
-          )
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 4)
-          .map((item) => ({
-            ...item,
-            id: item._id,
-            image: `${baseUrl}${item.image?.[0] || ""}`,
-          }));
+        if (products.length > 0) {
+          const filtered = products
+            .filter(
+              (p) => p.category === currentCategory && p._id !== currentProductId,
+            )
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 4)
+            .map((item) => ({
+              id: item._id,
+              name: item.name,
+              image: item.image?.[0] || "",
+              images: item.image || [],
+              newPrice: item.newPrice,
+              oldPrice: item.oldPrice,
+              category: item.category,
+              available: item.available,
+            }));
 
-        setRelatedProducts(filtered);
+          setRelatedProducts(filtered);
+        }
       } catch (error) {
         console.error("Error fetching related products:", error);
       } finally {
@@ -52,9 +63,12 @@ const RelatedProducts = ({ currentProductId, currentCategory }) => {
             relatedProducts.map((item) => (
               <Items
                 key={item.id}
-                {...item}
+                id={item.id}
+                name={item.name}
+                image={item.image}
                 new_price={item.newPrice}
                 old_price={item.oldPrice}
+                category={item.category}
               />
             ))
           ) : (
