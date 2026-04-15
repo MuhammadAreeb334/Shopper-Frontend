@@ -1,0 +1,65 @@
+.relatedproducts {
+  width: 80%;
+  margin: 80px auto;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+.relatedproducts h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.relatedproducts hr {
+  width: 100px;
+  height: 3px;
+  border: none;
+  background-color: #e60023;
+  margin: 0 auto 50px auto;
+  border-radius: 3px;
+}
+
+.relatedproducts-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  justify-content: center;
+  align-items: stretch;
+  margin-top: 20px;
+}
+
+.relatedproducts-items .item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.relatedproducts-items .item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .relatedproducts h1 {
+    font-size: 2rem;
+  }
+
+  .relatedproducts-items {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .relatedproducts {
+    padding: 3rem 1rem;
+  }
+
+  .relatedproducts h1 {
+    font-size: 1.6rem;
+  }
+
+  .relatedproducts hr {
+    width: 60px;
+  }
+}
