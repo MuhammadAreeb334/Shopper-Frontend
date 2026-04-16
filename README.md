@@ -89,7 +89,7 @@ Your payment details never touch my server. Stripe handles all sensitive informa
 ## Live Demo
 
 The frontend is deployed and available here:
-https://shopper-bice.vercel.app/
+https://shopper-clothings.vercel.app/
 
 You can test the payment flow using Stripe test mode:
 
