@@ -1,5 +1,5 @@
-// export const baseUrl = "https://shopper---backend.vercel.app";
-export const baseUrl = "http://localhost:4000";
+export const baseUrl = "https://shopper---backend.vercel.app";
+// export const baseUrl = "http://localhost:4000";
 // export const baseUrl = "https://wasting-pony-vagueness.ngrok-free.dev";
 
 export const FireAPI = async (endPoint, method = "GET", body, token = null) => {
